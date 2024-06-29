@@ -4,6 +4,7 @@
     use DateTime;
     use FileConvertibles\FileConvertible;
     use Employees\User;
+    use Faker\Factory;
 
     class Employee extends User implements FileConvertible{
         private string $jobTitle;
@@ -33,5 +34,24 @@
 
         public function toArray(): array{
             return parent::toArray() + ["jobTitle" => $this->jobTitle, "salary" => $this->salary, "startDate" => $this->startDate, "awards" => $this->awards];
+        }
+        public function displayEmployeeInformation(): void{
+        echo $this->jobTitle;
+        echo $this->salary;
+        echo $this->startDate;
+        echo $this->awards;
+        }
+
+        public static function RandomGenerator(): Employee{
+            $faker = Factory::create();
+
+            $firstName = $faker->firstName();
+            $lastName = $faker->lastName();
+            $jobTitle = $faker->jobTitle();
+            $salary = $faker->numberBetween(10000, 100000);
+            $startDate = $faker->dateTime();
+            $awards = $faker->words(5);
+
+            return new Employee($firstName, $lastName, $jobTitle, $salary, $startDate, $awards);
         }
     }
