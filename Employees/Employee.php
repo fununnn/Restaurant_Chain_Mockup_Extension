@@ -12,8 +12,23 @@
         private DateTime $startDate;
         private array $awards;
 
-        public function __construct(string $firstName, string $lastName, string $jobTitle, float $salary, DateTime $startDate, array $awards){
-            parent::__construct($firstName, $lastName);
+        public function __construct(
+                int $id,
+                string $firstName,
+                string $lastName,
+                string $email,
+                string $password,
+                string $phoneNumber,
+                string $address,
+                DateTime $birthDate,
+                DateTime $membershipExpirationDate,
+                string $role,
+                string $jobTitle,
+                float $salary,
+                DateTime $startDate,
+                array $awards
+            ){
+            parent::__construct($id, $firstName, $lastName, $email, $password, $phoneNumber, $address, $birthDate, $membershipExpirationDate, $role);
             $this->jobTitle = $jobTitle;
             $this->salary = $salary;
             $this->startDate = $startDate;
@@ -36,22 +51,30 @@
             return parent::toArray() + ["jobTitle" => $this->jobTitle, "salary" => $this->salary, "startDate" => $this->startDate, "awards" => $this->awards];
         }
         public function displayEmployeeInformation(): void{
-        echo $this->jobTitle;
-        echo $this->salary;
-        echo $this->startDate;
-        echo $this->awards;
+            echo $this->jobTitle;
+            echo $this->salary;
+            echo $this->startDate;
+            echo $this->awards;
         }
 
-        public static function RandomGenerator(): Employee{
+        public static function RandomGenerator(float $minSalary, float $maxSalary): Employee
+        {
             $faker = Factory::create();
-
-            $firstName = $faker->firstName();
-            $lastName = $faker->lastName();
-            $jobTitle = $faker->jobTitle();
-            $salary = $faker->numberBetween(10000, 100000);
-            $startDate = $faker->dateTime();
-            $awards = $faker->words(5);
-
-            return new Employee($firstName, $lastName, $jobTitle, $salary, $startDate, $awards);
+            return new Employee(
+                $faker->unique()->randomNumber(),  // ここで整数の id を生成
+                $faker->firstName(),
+                $faker->lastName(),
+                $faker->email,
+                $faker->password,
+                $faker->phoneNumber,
+                $faker->address,
+                $faker->dateTimeThisCentury,
+                $faker->dateTimeBetween('-10 years', '+20 years'),
+                $faker->randomElement(['admin', 'user', 'guest']),
+                $faker->jobTitle(),
+                $faker->randomFloat(2, $minSalary, $maxSalary),
+                $faker->dateTimeThisDecade,
+                $faker->words(3)
+            );
         }
     }

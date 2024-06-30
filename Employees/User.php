@@ -3,7 +3,7 @@
 namespace Employees;
 
 use DateTime;
-use FileConvertible\FileConvertible;
+use FileConvertibles\FileConvertible;
 
 class User implements FileConvertible{
     private int $id;
@@ -106,7 +106,7 @@ class User implements FileConvertible{
         - Email: {$this->email}
         - Phone Number: {$this->phoneNumber}
         - Address: {$this->address}
-        - Birth Date: {$this->birthDate}
+        - Birth Date: {$this->birthDate->format("Y-m-d")}
         - Is Active: {$this->membershipExpirationDate->format("Y-m-d")}
         - Role: {$this->role}";
     }
