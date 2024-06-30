@@ -96,7 +96,7 @@ class RestaurantLocation implements FileConvertible{
         echo $this->isOpen;
     }
 
-    public static function RandomGenerator(): RestaurantLocation {
+    public static function RandomGenerator(int $minZipCode, int $maxZipCode): RestaurantLocation {
         $faker = Factory::create();
 
         $name = $faker->company;
@@ -110,6 +110,7 @@ class RestaurantLocation implements FileConvertible{
         }
         $isOpen = $faker->boolean;
         $hasDriveThru = $faker->boolean;
+        $zipCode = $faker->numberBetween($minZipCode, $maxZipCode);
         return new RestaurantLocation($name, $address, $city, $state, $zipCode, $employees, $isOpen, $hasDriveThru);
     }
 }

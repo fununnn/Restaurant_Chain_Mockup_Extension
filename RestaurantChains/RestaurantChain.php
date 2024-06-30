@@ -5,6 +5,7 @@ namespace RestaurantChains;
 use RestaurantChains\Company;
 use RestaurantChains\RestaurantLocation;
 use Faker\Factory;
+use Employees\Employee;
 
 class RestaurantChain extends Company{
 
@@ -53,7 +54,14 @@ class RestaurantChain extends Company{
         echo $this->restaurantLocations;
     }
 
-    public static function RandomGenerator(): RestaurantChain{
+    public static function RandomGenerator(
+        int $employeeCount,
+        float $minSalary,
+        float $maxSalary,
+        int $locationCount,
+        int $minZipCode,
+        int $maxZipCode
+    ): RestaurantChain{
         $faker = Factory::create();
 
         $name = $faker->company;
@@ -72,9 +80,13 @@ class RestaurantChain extends Company{
         $parentCompany = $faker->sentence;
 
         $restaurantLocations = [];
-        for ($i = 0; $i < $faker->numberBetween(1,5); $i++) {
-            $restaurantLocations[] = RestaurantLocation::RandomGenerator();
+        for ($i = 0; $i < $locationCount; $i++) {
+            $restaurantLocations[] = RestaurantLocation::RandomGenerator($minZipCode, $maxZipCode);
     }
+        $employees = [];
+        for($i, $j = 0; $i < $employeeCount; $i++, $j++){
+            $employees[] = Employee::RandomGenerator($minSalary, $maxSalary);
+        }
 
         return new RestaurantChain(
             $name,
@@ -91,7 +103,8 @@ class RestaurantChain extends Company{
             $chainId,
             $restaurantLocations,
             $cuisineType,
-            $parentCompany
+            $parentCompany,
+            $employees
         );
     }
 
